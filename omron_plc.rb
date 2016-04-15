@@ -236,11 +236,17 @@ module OMRON
     def handle_0701(code, body)
       i = 0
       time = Time.now
+      short_year = time.year - 2000
 
-      str = format("%02x", 2000 - time.year) + format("%02x", time.month) +
-        format("%02x", time.day) + format("%02x", time.hour) +
-        format("%02x", time.min) + format("%02x", time.sec)
-      
+      str =
+        format("%d%d", short_year / 10, short_year % 10) +
+        format("%d%d", time.month / 10, time.month % 10) +
+        format("%d%d", time.day / 10, time.day % 10) +
+        format("%d%d", time.hour / 10, time.hour % 10) +
+        format("%d%d", time.min / 10, time.min % 10) + 
+        format("%d%d", time.sec / 10, time.sec % 10) +
+        format("%02d", time.wday)
+
       values_bin = [str].pack("H*")
       code + finish_code + values_bin
     end
