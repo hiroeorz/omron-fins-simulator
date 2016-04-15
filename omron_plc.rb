@@ -32,6 +32,7 @@ module OMRON
       @countup_dmno_list = params[:countup_dmno_list] || []
       @dm_mutex = Mutex.new
 
+      puts
       load_file(params[:load_file])
     end
 
@@ -134,7 +135,7 @@ module OMRON
     def load_file(path)
       return if path.nil?
 
-      print "loading #{path}..."
+      print "Loading #{path}..."
       YAML.load_file(path).each do |dmno, val|
         write_dm_value(dmno, val)
       end
