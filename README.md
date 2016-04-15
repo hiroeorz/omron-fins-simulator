@@ -15,7 +15,7 @@ PLCとFINSプロトコルを通じて通信するプログラムのデバッグ�
 このプロジェクトを手元に `git clone` してください。
 
 ```
-$ https://github.com/hiroeorz/omron-fins-simulator.git
+$ git clone https://github.com/hiroeorz/omron-fins-simulator.git
 ```
 
 実行に必要なファイルは `omron_plc.rb` のみですので、これをそのまま実行するか、または適当なディレクトリにコピーして実行してください。
@@ -46,6 +46,7 @@ $ ruby omron_plc.rb --address=172.16.15.35 --port=9600 --count_up_dm=5095 --coun
 * `--countup_interval` : 自動カウントアップするインターバルを指定。デフォルトは5秒
 * `--load_file` : 起動時に読み込むDMの設定ファイル。指定しなければ、全てのDMは初期状態で `0`
     * 設定ファイルのフォーマットはYAMLで、キーがDM番号、値がDMの値
+
         ``` 
         3: 0
         100: 11
