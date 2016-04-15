@@ -5,6 +5,9 @@
 これはRubyの動作するPCを仮想PLCとして動作させるためのスクリプトです。
 PLCとFINSプロトコルを通じて通信するプログラムのデバッグのために実装しました。
 
+起動と同時に指定ポート(デフォルト:9600)でUDPソケットをListenし、FINSプロトコルによる要求に対して応答を返します。
+現時点ではDMエリアの取得と書き込み、及び日時の取得にのみ対応しています。またTCPには対応しておりません。
+
 ## 実行環境
 
 * `Ruby 1.8` 以上。Linux, MacOSXで検証済み。Windowsでも動作すると思います。
@@ -61,7 +64,7 @@ $ ruby omron_plc.rb --address=192.168.0.6 --port=9600 --count_up_dm=5095 --count
 ```
 $ ruby omron_plc.rb --address=192.168.0.6 --port=9600
 
-loading /tmp/test.yaml...done
+Loading /tmp/test.yaml...done
 UDP Socket bind to host:192.168.0.6, port:9600.
 
 ----------------------------------------------------
@@ -111,7 +114,7 @@ EXIT COMMAND       : > exit
 ```
 $ ruby omron_plc.rb --address=192.168.0.6 --port=9600
 
-loading /tmp/test.yaml...done
+Loading /tmp/test.yaml...done
 UDP Socket bind to host:172.16.15.35, port:9600.
 
 ----------------------------------------------------
