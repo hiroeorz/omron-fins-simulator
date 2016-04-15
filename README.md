@@ -35,7 +35,6 @@ $ ruby omron_plc.rb --address=172.16.15.35 --port=9600
 その他、幾つかのオプションがあります。
 
 ```
-$ cd omron-fins-simulator
 $ ruby omron_plc.rb --address=172.16.15.35 --port=9600 --count_up_dm=5095 --countup_interval=5 --load_file=/tmp/dm.yaml
 ```
 
