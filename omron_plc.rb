@@ -157,8 +157,9 @@ module OMRON
         "\x01\x01" => lambda{ handle_0101(code, body) },
         "\x01\x02" => lambda{ handle_0102(code, body) },
         "\x01\x03" => lambda{ handle_0103(code, body) },
-        "\x01\x04" => lambda{ handle_0104(code, body) },
-      }[code]
+        "\x01\x04" => lambda{ handle_0104(code, body) }, 
+        "\x07\x01" => lambda{ handle_0701(code, body) },
+     }[code]
 
       if handler.nil?
         raise "not supported code received!"
@@ -229,6 +230,18 @@ module OMRON
         [v[:io_facility], [format("%04x", v[:val])].pack("H*")]
       }.flatten.join
 
+      code + finish_code + values_bin
+    end
+
+    def handle_0701(code, body)
+      i = 0
+      time = Time.now
+
+      str = format("%02x", 2000 - time.year) + format("%02x", time.month) +
+        format("%02x", time.day) + format("%02x", time.hour) +
+        format("%02x", time.min) + format("%02x", time.sec)
+      
+      values_bin = [str].pack("H*")
       code + finish_code + values_bin
     end
 
