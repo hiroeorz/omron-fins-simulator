@@ -88,6 +88,7 @@ module OMRON
           code = bin[10, 2]
           body = bin[12..-1]
 
+          puts "-------------------------------------------"
           puts "DEBUG: recv #{bin.unpack('H*').first}"
           puts "DEBUG: recv command code: [#{code[0,1].unpack('H*').first}, #{code[1,1].unpack('H*').first}]"
           
