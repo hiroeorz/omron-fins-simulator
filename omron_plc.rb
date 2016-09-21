@@ -86,11 +86,21 @@ module OMRON
           header_bin = bin[0, 10]
           header = Header.parse(header_bin)
           code = bin[10, 2]
-          #print "recv code: [#{code[0,1].unpack('H*')}, #{code[1,1].unpack('H*')}]"
+          body = bin[12..-1]
+
+          puts "DEBUG: recv #{bin.unpack('H*').first}"
+          puts "DEBUG: recv command code: [#{code[0,1].unpack('H*').first}, #{code[1,1].unpack('H*').first}]"
           
           begin
-            handle(code, bin[12..-1], header, sender[2], sender[1])
+            handle(code, body, header, sender[2], sender[1])
           rescue => e
+            puts "not supported code received!"
+            puts " from  : #{host}:#{port}"
+            puts " header: #{header.binary.unpack('H*').first}" if header
+            puts " code  : #{code.unpack('H*').first}" if code
+            puts " body  : #{body.unpack('H*').first}" if body
+            puts 
+
             p e
           end
         end
@@ -176,7 +186,8 @@ module OMRON
         client = UDPSocket.open()        
         client.send(send_data, 0, sock_addr)
         client.close
-        #puts "...sent ok (identifier=#{reply_header.sid.unpack('H*').first.hex})"
+        puts "DEBUG: reply sent ok (identifier=#{reply_header.sid.unpack('H*').first.hex})"
+        puts "DEBUG: reply bin: #{send_data.unpack('H*').first}"
       end
     end
 
@@ -257,6 +268,7 @@ module OMRON
 
     class Header
       attr_accessor :icf, :rsv, :gct, :dna, :da1, :da2, :sna, :sa1, :sa2, :sid
+      attr_accessor :binary
 
       def self.parse(binary)
         raise ArugmentError.new("invalid header binary: #{binary}") unless binary.kind_of?(String)
@@ -272,10 +284,11 @@ module OMRON
         params[:sa1] = binary[7, 1]
         params[:sa2] = binary[8, 1]
         params[:sid] = binary[9, 1]
-        self.new(params)
+        self.new(params, binary)
       end
 
-      def initialize(params)
+      def initialize(params, binary = nil)
+        @binary = binary
         @icf = (params[:icf] || create_icf())
         @rsv = (params[:rsv] || create_rsv())
         @gct = (params[:gct] || create_gct())
