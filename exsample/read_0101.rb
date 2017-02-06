@@ -9,6 +9,8 @@ end
 
 command = "800002000100000100000101000000010001"
 bin = [command].pack("H*")
+p bin.size
+File.open("./omron_send_bin.txt", "wb"){ |f| f.write(bin) }
 
 udp_client = UDPSocket.open()
 sockaddr = Socket.pack_sockaddr_in(PORT, HOST)

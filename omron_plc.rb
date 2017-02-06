@@ -27,7 +27,7 @@ module OMRON
       @host = host
       @port = port
       @sock = nil
-      @dm_area = Array.new(6554, 0)
+      @dm_area = Array.new(32767, 0)
       @countup_interval = params[:countup_interval] || 5
       @countup_dmno_list = params[:countup_dmno_list] || []
       @dm_mutex = Mutex.new
@@ -197,6 +197,7 @@ module OMRON
       count =         body[4..5].unpack("H*")[0].hex
 
       values = dm_value(start_address, count)
+      p [start_address, count]
       values_bin = values.map {|v| [format("%04x", v)].pack("H*")}.join
       code + finish_code + values_bin
     end
